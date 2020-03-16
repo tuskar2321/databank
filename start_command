@@ -1,0 +1,1 @@
+docker run -it --name databank -p 5433:5432 -p 81:80 -v "$PWD/logs/appservice:/var/Panorama/appservice/LOG" -v "$PWD/logs/giswebservicese:/var/Panorama/giswebservicese/logs" --rm databank
