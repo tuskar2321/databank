@@ -62,11 +62,14 @@ RUN yum localinstall -y /usr/gisserver.noarch.rpm || true
 RUN yum localinstall -y /usr/giswebservicese.noarch.rpm || true
 RUN yum localinstall -y /usr/geodbse.noarch.rpm
 
+# setup geodbse
+RUN sed -i 's|localhost|localhost:8081|g' /var/Panorama/GeoDBSE/geodbse/config.xml
+
 CMD \
     bash -c "sudo -u postgres /usr/bin/postgres -D /db -c config_file=/var/lib/pgsql/data/postgresql.conf &" && \
     /bin/bash /usr/appservice/startgis.bat && \
     /bin/bash /usr/gisserver/gsservice.bat && \
-    sleep 2 && \
+    sleep 4 && \
     /bin/bash /var/Panorama/GeoDBSE/base/createdb/creategeodb.bat || true && \
     echo "geodb backup restored" && \
     /usr/sbin/httpd -D FOREGROUND
