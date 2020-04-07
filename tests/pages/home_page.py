@@ -10,31 +10,38 @@ from .tabs.matrix_tab import MatrixTab
 from .tabs.raster_tab import RasterTab
 from .tabs.rsc_tab import RscTab
 
+from .dialogs.text_search_dialog import TextSearchDialog
+
 explicit_wait = 10  # sec
 
 
 class HomePage:
     def __init__(self, driver):
         self.driver = driver
+
+        # tabs
         self.matrix_tab = MatrixTab(driver)
         self.raster_tab = RasterTab(driver)
         self.maps_tab = MapsTab(driver)
         self.upload_tab = UploadTab(driver)
         self.rsc_tab = RscTab(driver)
-        
+
+        # dialogs
+        self.text_search_dialog = TextSearchDialog(driver)
+
     def open(self):
         try:
             tagret_host = os.environ['HOST']
-            self.driver.get('http://admin:admin@' + tagret_host + '/geodbse/?act=login')  
+            self.driver.get('http://admin:admin@' + tagret_host + '/geodbse/?act=login')
         except:
-            self.driver.get('http://admin:admin@localhost/geodbse/geodbse/?act=login')  
+            self.driver.get('http://admin:admin@localhost/geodbse/geodbse/?act=login')
 
     def get_maps_tab(self):
         return self.maps_tab
 
     def get_matrix_tab(self):
         return self.matrix_tab
-    
+
     def get_raster_tab(self):
         return self.raster_tab
 
@@ -43,6 +50,9 @@ class HomePage:
 
     def get_rsc_tab(self):
         return self.rsc_tab
+
+    def get_text_search_dialog(self):
+        return self.text_search_dialog
 
     def wait_for_popup(self, timeout):
         return WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located((By.ID, 'w2ui-popup')))
